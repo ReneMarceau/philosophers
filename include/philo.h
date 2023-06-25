@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 13:36:14 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/23 15:02:42 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/25 02:00:59 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ typedef enum e_states
 typedef enum e_mutexes
 {
     WRITE,
-    DEAD,
+    DEATH,
     EATEN,
     NB_MUTEXES
 }            t_mutexes;
@@ -138,6 +138,11 @@ typedef struct s_table {
 /*                                 FUNCTIONS                                 */
 /* *************** ***************           *************** *************** */
 
+/* ***** LIBFT  ***** */
+long ft_atol(const char *string);
 
+/* ***** UTILS ***** */
+void end_program(t_table *table, char *error);
+bool check_args(int argc, char **argv);
 
 #endif

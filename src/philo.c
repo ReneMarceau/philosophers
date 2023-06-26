@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:47 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/26 18:23:11 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:53:47 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	*philo_life(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->table->input.nb_philo == 1)
 	{
-		ft_usleep(philo->table->input.time_to_die / 2);
+		ft_usleep(philo->table->input.time_to_die);
 		ft_printf(philo, DIE, RED);
 		return (NULL);
 	}

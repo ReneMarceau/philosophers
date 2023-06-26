@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 13:36:14 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/26 18:12:37 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:45:56 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
 # include <stdbool.h>
 /* ***** INT_MAX ***** */
 # include <limits.h>
-/* ***** MEMSET ***** */
-# include <string.h>
 
 /* *************** ***************           *************** *************** */
 /*                                   MACROS                                  */
@@ -50,13 +48,8 @@
         5th argument: number of times each philosopher must eat (optional)\n"
 # define ERR_MALLOC "Error: malloc failed\n"
 # define ERR_MUTEX "Error: mutex creation failed\n"
-# define ERR_MUTEX_LOCK "Error: mutex lock failed\n"
-# define ERR_MUTEX_UNLOCK "Error: mutex unlock failed\n"
-# define ERR_MUTEX_DESTROY "Error: mutex destroy failed\n"
 # define ERR_THREAD "Error: thread creation failed\n"
 # define ERR_JOIN "Error: thread join failed\n"
-# define ERR_USLEEP "Error: usleep failed\n"
-# define ERR_GETTIMEOFDAY "Error: gettimeofday failed\n"
 
 /* ***** MOVES ***** */
 # define TAKE_FORK "has taken a fork 🍴\n"
@@ -126,11 +119,11 @@ typedef struct s_table
 
 /* ***** PHILO_LIFE ***** */
 void				*philo_life(void *arg);
-bool				death_watcher(t_philo *philo, u_int64_t now);
 
 /* ***** THREAD ***** */
 bool				create_philosophers(t_table *table);
 bool				join_philosophers(t_table *table);
+bool				death_watcher(t_philo *philo, u_int64_t now);
 
 /* ***** LIBFT  ***** */
 bool				ft_printf(t_philo *philo, const char *string, char *color);

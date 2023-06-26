@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 13:36:14 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/25 21:40:18 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:12:37 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,6 @@ void				end_program(t_table *table, char *error);
 bool				check_args(int argc, char **argv);
 u_int64_t			get_time(void);
 void				ft_usleep(u_int64_t time);
+void				drop_forks(t_philo *philo);
 
 #endif

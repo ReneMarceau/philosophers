@@ -6,11 +6,18 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:59 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/25 21:00:28 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:01:34 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+// Releases both the forks held by the philosopher.
+void	drop_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(&philo->left_fork);
+}
 
 // Returns the current time in milliseconds using both seconds and microseconds.
 u_int64_t	get_time(void)

@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:42 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/25 21:16:39 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:34:21 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,21 @@ long	ft_atol(const char *string)
 // and returns a boolean value.
 bool	ft_printf(t_philo *philo, const char *string, char *color)
 {
-	u_int64_t	now;
-
 	pthread_mutex_lock(&philo->table->mutex[WRITE]);
-	now = get_time() - philo->table->start_time;
 	if (death_watcher(philo, get_time()) || philo->table->stop)
 	{
 		if (!philo->table->stop)
 		{
-			printf("%s%ld %ld %s%s", RED, now, philo->id, DIE, RESET);
+			printf("%s%ld %ld %s%s", RED, get_time() - philo->table->start_time,
+				philo->id, DIE, RESET);
 			philo->table->stop = true;
 		}
 		pthread_mutex_unlock(&philo->table->mutex[WRITE]);
 		return (false);
 	}
 	if (!philo->table->stop)
-		printf("%s%ld %ld %s%s", color, now, philo->id, string, RESET);
+		printf("%s%ld %ld %s%s", color, get_time() - philo->table->start_time,
+			philo->id, string, RESET);
 	pthread_mutex_unlock(&philo->table->mutex[WRITE]);
 	return (true);
 }

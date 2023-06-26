@@ -6,49 +6,60 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:59 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/25 02:03:09 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/25 21:00:28 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static bool is_valid_arg(char *string)
+// Returns the current time in milliseconds using both seconds and microseconds.
+u_int64_t	get_time(void)
 {
-    int i;
+	struct timeval	time;
 
-    i = 0;
-    while (string[i])
-    {
-        if (string[i] < '0' || string[i] > '9')
-            return (false);
-        i++;
-    }
-    return (true);
+	gettimeofday(&time, NULL);
+	return ((u_int64_t)(time.tv_sec * 1000 + time.tv_usec / 1000));
 }
 
-bool check_args(int argc, char **argv)
+// Used to sleep the program for a given amount of time in milliseconds,
+// by repeatedly checking the elapsed time since starting the sleep.
+void	ft_usleep(u_int64_t time)
 {
-    long argument;
-    int i;
+	u_int64_t	start;
 
-    i = 0;
-    while (++i < argc)
-    {
-        argument = ft_atol(argv[i]);
-        if (!is_valid_arg(argv[i]) || argument > INT_MAX)
-            return (false);
-    }
-    return (true);
+	start = get_time();
+	while (get_time() - start < time)
+		usleep(time / 10);
 }
 
-void end_program(t_table *table, char *error)
+// Checks if a string is a valid integer.
+static bool	is_valid_arg(char *string)
 {
-    if (error)
-        write(2, error, strlen(error));
-    if (table)
-    {
-/*         destroy_mutexes(table);
-        destroy_philosophers(table); */
-        //free(table);
-    }
+	int	i;
+
+	i = 0;
+	while (string[i])
+	{
+		if (string[i] < '0' || string[i] > '9')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+// Checks if all command-line arguments are valid integers
+// within the range of an integer variable.
+bool	check_args(int argc, char **argv)
+{
+	long	argument;
+	int		i;
+
+	i = 0;
+	while (++i < argc)
+	{
+		argument = ft_atol(argv[i]);
+		if (!is_valid_arg(argv[i]) || argument > INT_MAX)
+			return (false);
+	}
+	return (true);
 }

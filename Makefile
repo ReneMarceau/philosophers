@@ -6,22 +6,23 @@
 #    By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 13:30:35 by rmarceau          #+#    #+#              #
-#    Updated: 2023/06/25 01:44:40 by rmarceau         ###   ########.fr        #
+#    Updated: 2023/06/25 21:48:33 by rmarceau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror -pthread -g
-CFLAGS = -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -g
 RM = rm -rf
 
 INC_DIR = include
 SRCS_DIR = src
 OBJS_DIR = objs
 
-SRCS = main.c utils.c libft.c
+SRCS =	main.c libft.c init.c	\
+		philo.c thread.c		\
+		utils.c end_program.c	\
 
 OBJS = $(addprefix ${OBJS_DIR}/, ${SRCS:%.c=%.o})
 

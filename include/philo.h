@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 13:36:14 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/25 02:00:59 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/25 21:40:18 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,83 +66,85 @@
 # define DIE "died 💀\n"
 
 /* ***** COLORS ***** */
-# define RESET   "\e[0m"
-# define BLACK   "\033[0;30m"
-# define RED     "\033[0;31m"
-# define GREEN   "\033[0;32m"
-# define YELLOW  "\033[0;33m"
-# define BLUE    "\033[0;34m"
+# define RESET "\e[0m"
+# define BLACK "\033[0;30m"
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define YELLOW "\033[0;33m"
+# define BLUE "\033[0;34m"
 # define MAGENTA "\033[0;35m"
-# define CYAN    "\033[0;36m"
-# define WHITE   "\033[0;37m"
+# define CYAN "\033[0;36m"
+# define WHITE "\033[0;37m"
 
 /* *************** ***************           *************** *************** */
 /*                                   STRUCTS                                 */
 /* *************** ***************           *************** *************** */
 
-/* ***** PHILOSOPHERS STATES ***** */
-typedef enum e_states
-{
-    THINKING,
-    EATING,
-    SLEEPING,
-    DEAD,
-    DONE_EATING,
-    LEFT_FORK_TAKEN,
-    RIGHT_FORK_TAKEN,
-    NB_STATES
-}            t_states;
-
 /* ***** MUTEXES ***** */
 typedef enum e_mutexes
 {
-    WRITE,
-    DEATH,
-    EATEN,
-    NB_MUTEXES
-}            t_mutexes;
+	WRITE,
+	DEATH,
+	NB_MUTEXES
+}					t_mutexes;
 
 /* ***** INPUT ***** */
 typedef struct s_input
 {
-    size_t nb_philo;
-    u_int64_t time_to_die;
-    u_int64_t time_to_eat;
-    u_int64_t time_to_sleep;
-    size_t nb_eat;
-}            t_input;
+	size_t			nb_philo;
+	u_int64_t		time_to_die;
+	u_int64_t		time_to_eat;
+	u_int64_t		time_to_sleep;
+	int				nb_eat;
+}					t_input;
 
 /* ***** PHILOSOPHERS ***** */
 typedef struct s_philo
 {
-    size_t id;
-    size_t nb_eat;
-    u_int64_t last_meal;
-    pthread_mutex_t left_fork;
-    pthread_mutex_t *right_fork;
-    pthread_t thread;
-    bool state[NB_STATES];
-    struct s_table *table;
-}            t_philo;
+	size_t			id;
+	size_t			nb_eat;
+	u_int64_t		last_meal;
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_t		thread;
+	struct s_table	*table;
+}					t_philo;
 
 /* ***** TABLE ***** */
-typedef struct s_table {
-    t_input input;
-    t_philo *philos;
-    u_int64_t start_time;
-    pthread_mutex_t mutex[NB_MUTEXES];
-    bool stop;
-}            t_table;
+typedef struct s_table
+{
+	t_input			input;
+	u_int64_t		start_time;
+	t_philo			*philos;
+	pthread_mutex_t	mutex[NB_MUTEXES];
+	bool			stop;
+}					t_table;
 
 /* *************** ***************           *************** *************** */
 /*                                 FUNCTIONS                                 */
 /* *************** ***************           *************** *************** */
 
+/* ***** PHILO_LIFE ***** */
+void				*philo_life(void *arg);
+bool				death_watcher(t_philo *philo, u_int64_t now);
+
+/* ***** THREAD ***** */
+bool				create_philosophers(t_table *table);
+bool				join_philosophers(t_table *table);
+
 /* ***** LIBFT  ***** */
-long ft_atol(const char *string);
+bool				ft_printf(t_philo *philo, const char *string, char *color);
+long				ft_atol(const char *string);
+size_t				ft_strlen(const char *string);
+
+/* ***** INIT ***** */
+bool				init_table(t_table *table, int argc, char **argv,
+						char **status);
 
 /* ***** UTILS ***** */
-void end_program(t_table *table, char *error);
-bool check_args(int argc, char **argv);
+void				end_program(t_table *table, char *error);
+bool				check_args(int argc, char **argv);
+u_int64_t			get_time(void);
+void				ft_usleep(u_int64_t time);
 
 #endif

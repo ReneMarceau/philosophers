@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:46:23 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/26 21:19:17 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:45:44 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ bool	death_watcher(t_philo *philo, u_int64_t now)
 	time_to_eat = philo->table->input.time_to_eat;
 	time_to_sleep = philo->table->input.time_to_sleep;
 	pthread_mutex_lock(&philo->table->mutex[DEATH]);
-	if (now - philo->last_meal > time_to_die && !philo->table->stop)
+    if (philo->table->stop || (int)philo->nb_eat == philo->table->input.nb_eat)
+    {
+        philo->table->philo_full++;
+        pthread_mutex_unlock(&philo->table->mutex[DEATH]);
+        return (true);
+    }
+	if ((now - philo->last_meal) > time_to_die && !philo->table->stop)
 	{
-		philo->table->stop = true;
-		if ((time_to_die < time_to_eat) || (time_to_die < (time_to_eat
-					+ time_to_sleep)))
-			printf("%s%ld %ld %s%s", RED, time_to_die, philo->id, DIE, RESET);
-		else
-			printf("%s%ld %ld %s%s", RED, get_time() - philo->table->start_time,
-				philo->id, DIE, RESET);
+        philo->table->stop = true;
+        printf("%s%llu %ld %s%s", RED, now - philo->table->start_time,
+            philo->id, DIE, RESET);
 		pthread_mutex_unlock(&philo->table->mutex[DEATH]);
 		return (true);
 	}
@@ -60,11 +62,9 @@ void	end_program(t_table *table, char *error)
 	if (table)
 	{
 		if (table->stop)
-		{
 			destroy_mutexes(table);
-			if (table->philos)
-				free(table->philos);
-		}
+        if (table->philos)
+            free(table->philos);
 		free(table);
 		if (error)
 		{

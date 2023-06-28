@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 13:36:14 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/26 18:45:56 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:01:13 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef enum e_mutexes
 {
 	WRITE,
 	DEATH,
+    GLOBAL,
 	NB_MUTEXES
 }					t_mutexes;
 
@@ -100,6 +101,7 @@ typedef struct s_philo
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
+    bool            is_eating;
 	struct s_table	*table;
 }					t_philo;
 
@@ -109,6 +111,7 @@ typedef struct s_table
 	t_input			input;
 	u_int64_t		start_time;
 	t_philo			*philos;
+    size_t          philo_full;
 	pthread_mutex_t	mutex[NB_MUTEXES];
 	bool			stop;
 }					t_table;
@@ -121,6 +124,7 @@ typedef struct s_table
 void				*philo_life(void *arg);
 
 /* ***** THREAD ***** */
+void                observer(t_table *table);
 bool				create_philosophers(t_table *table);
 bool				join_philosophers(t_table *table);
 bool				death_watcher(t_philo *philo, u_int64_t now);

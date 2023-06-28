@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:40 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/25 21:03:55 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:53:35 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 // Initializes the table struct with input values provided through command line
 // using the ft_atol() function.
-static void	init_args(t_table *table, int argc, char **argv)
+static bool	init_args(t_table *table, int argc, char **argv)
 {
 	table->input.nb_philo = ft_atol(argv[1]);
+    if (table->input.nb_philo <= 0)
+        return (false);
 	table->input.time_to_die = ft_atol(argv[2]);
 	table->input.time_to_eat = ft_atol(argv[3]);
 	table->input.time_to_sleep = ft_atol(argv[4]);
@@ -24,6 +26,7 @@ static void	init_args(t_table *table, int argc, char **argv)
 		table->input.nb_eat = ft_atol(argv[5]);
 	else
 		table->input.nb_eat = -1;
+    return (true);
 }
 
 // Initializes all the mutexes required for the program
@@ -69,6 +72,7 @@ static bool	init_philosophers(t_table *table)
 		table->philos[i].right_fork = &table->philos[(i + 1)
 			% table->input.nb_philo].left_fork;
 		table->philos[i].table = table;
+        table->philos[i].is_eating = false;
 		i++;
 	}
 	return (true);
@@ -78,7 +82,9 @@ static bool	init_philosophers(t_table *table)
 bool	init_table(t_table *table, int argc, char **argv, char **status)
 {
 	table->philos = NULL;
-	init_args(table, argc, argv);
+    table->philo_full = 0;
+	if (!init_args(table, argc, argv))
+        return (*status = ERR_ARGV, false);
 	if (!init_mutexes(table, status))
 		return (false);
 	init_philosophers(table);

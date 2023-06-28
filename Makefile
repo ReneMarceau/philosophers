@@ -6,14 +6,14 @@
 #    By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 13:30:35 by rmarceau          #+#    #+#              #
-#    Updated: 2023/06/26 18:28:21 by rmarceau         ###   ########.fr        #
+#    Updated: 2023/06/27 16:28:56 by rmarceau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=address
 RM = rm -rf
 
 INC_DIR = include

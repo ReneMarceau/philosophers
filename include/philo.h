@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 13:36:14 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/27 19:01:13 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:52:43 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@
 typedef enum e_mutexes
 {
 	WRITE,
+    EATING,
 	DEATH,
     GLOBAL,
 	NB_MUTEXES

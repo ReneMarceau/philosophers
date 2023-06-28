@@ -6,40 +6,58 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:46:23 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/27 18:45:44 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:13:52 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+// This function checks if the program is over by checking two conditions:
+// If the philosopher has eaten the required number of times (nb_eat).
+// Otherwise, it checks if the time passed
+// since the last meal is greater than the allowed time to die.
+// If it is, then it sets the table stop flag to true
+// and prints a message indicating the philosopher has died.
+static bool is_program_over(t_philo *philo, u_int64_t now)
+{
+    bool is_program_over;
+    bool is_philo_full;
+    u_int64_t time_since_last_meal;
+
+    pthread_mutex_lock(&philo->table->mutex[EATING]);
+    is_philo_full = (int)philo->nb_eat == philo->table->input.nb_eat;
+    time_since_last_meal = now - philo->last_meal;
+    pthread_mutex_unlock(&philo->table->mutex[EATING]);
+    pthread_mutex_lock(&philo->table->mutex[DEATH]);
+    is_program_over = philo->table->stop || is_philo_full;
+    pthread_mutex_unlock(&philo->table->mutex[DEATH]);
+    if (is_program_over)
+    {
+        if (is_philo_full)
+            philo->table->philo_full++;
+        //pthread_mutex_unlock(&philo->table->mutex[DEATH]);
+        return (true);
+    }
+	if (time_since_last_meal > philo->table->input.time_to_die && !is_program_over)
+	{
+        ft_printf(philo, DIE, RED);
+        pthread_mutex_lock(&philo->table->mutex[DEATH]);
+        philo->table->stop = true;
+        pthread_mutex_unlock(&philo->table->mutex[DEATH]);
+		return (true);
+	}
+    return (false);
+}
 
 // Checks if the philosopher has died by calculating
 // the time passed since last meal. It returns true if the time is greater
 // than the time allowed to pass without eating, else it returns false.
 bool	death_watcher(t_philo *philo, u_int64_t now)
 {
-	u_int64_t	time_to_die;
-	u_int64_t	time_to_eat;
-	u_int64_t	time_to_sleep;
-
-	time_to_die = philo->table->input.time_to_die;
-	time_to_eat = philo->table->input.time_to_eat;
-	time_to_sleep = philo->table->input.time_to_sleep;
-	pthread_mutex_lock(&philo->table->mutex[DEATH]);
-    if (philo->table->stop || (int)philo->nb_eat == philo->table->input.nb_eat)
-    {
-        philo->table->philo_full++;
-        pthread_mutex_unlock(&philo->table->mutex[DEATH]);
+	//pthread_mutex_lock(&philo->table->mutex[DEATH]);
+    if (is_program_over(philo, now))
         return (true);
-    }
-	if ((now - philo->last_meal) > time_to_die && !philo->table->stop)
-	{
-        philo->table->stop = true;
-        printf("%s%llu %ld %s%s", RED, now - philo->table->start_time,
-            philo->id, DIE, RESET);
-		pthread_mutex_unlock(&philo->table->mutex[DEATH]);
-		return (true);
-	}
-	pthread_mutex_unlock(&philo->table->mutex[DEATH]);
+	//pthread_mutex_unlock(&philo->table->mutex[DEATH]);
 	return (false);
 }
 

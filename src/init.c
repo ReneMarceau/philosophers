@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:40 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/27 19:53:35 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:53:44 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static bool	init_mutexes(t_table *table, char **status)
 }
 
 // Initializes the philosopher threads with their respective attributes.
-static bool	init_philosophers(t_table *table)
+static void	init_philosophers(t_table *table)
 {
 	size_t	i;
 
@@ -75,13 +75,11 @@ static bool	init_philosophers(t_table *table)
         table->philos[i].is_eating = false;
 		i++;
 	}
-	return (true);
 }
 
 // Initializes the table struct with initial values and mutexes.
 bool	init_table(t_table *table, int argc, char **argv, char **status)
 {
-	table->philos = NULL;
     table->philo_full = 0;
 	if (!init_args(table, argc, argv))
         return (*status = ERR_ARGV, false);

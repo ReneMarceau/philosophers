@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:47 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/27 19:54:11 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:46:46 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ static bool	philo_eating(t_philo *philo)
 		return (drop_forks(philo), false);
 	if (!ft_printf(philo, EAT, GREEN))
 		return (drop_forks(philo), false);
+    pthread_mutex_lock(&philo->table->mutex[EATING]);
     philo->is_eating = true;
-	ft_usleep(philo->table->input.time_to_eat);
     philo->last_meal = get_time();
+    pthread_mutex_unlock(&philo->table->mutex[EATING]);
+	ft_usleep(philo->table->input.time_to_eat);
+    pthread_mutex_lock(&philo->table->mutex[EATING]);
     philo->is_eating = false;
+    pthread_mutex_unlock(&philo->table->mutex[EATING]);
 	if (philo->table->input.nb_eat != -1)
 		philo->nb_eat++;
 	pthread_mutex_unlock(philo->right_fork);
@@ -56,6 +60,7 @@ void	*philo_life(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+    //printf("philo %zu timestamp: %lld\n", philo->id, get_time() - philo->table->start_time);
 	if (philo->table->input.nb_philo == 1)
 	{
         ft_printf(philo, TAKE_FORK, YELLOW);

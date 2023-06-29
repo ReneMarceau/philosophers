@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:45 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/29 01:21:21 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:33:58 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ static void	observer(t_table *table)
 		pthread_mutex_unlock(&table->mutex[EATING]);
 		if (i == table->input.nb_philo)
 			i = 0;
+		pthread_mutex_lock(&table->mutex[DEATH]);
+		table->stop = table->philo_full == table->input.nb_philo;
+		pthread_mutex_unlock(&table->mutex[DEATH]);
 		if (!is_philo_eating)
 			death_watcher(&table->philos[i], get_time());
-		if (table->philo_full == table->input.nb_philo)
-			table->stop = true;
 		if (table->stop)
 			break ;
 		i++;

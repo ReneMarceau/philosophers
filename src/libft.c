@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:42 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/29 00:59:59 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:57:32 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ bool	ft_printf(t_philo *philo, const char *string, const char *color)
 	if (program_stopped)
 		return (pthread_mutex_unlock(&philo->table->mutex[WRITE]), false);
 	else
-		printf("%s%lu %ld %s%s\n", color, now, philo->id, string, RESET);
+		printf("%s%llu %ld %s%s\n", color, now, philo->id, string, RESET);
 	return (pthread_mutex_unlock(&philo->table->mutex[WRITE]), true);
 }

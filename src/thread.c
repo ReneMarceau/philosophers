@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:52 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/28 17:44:06 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/29 00:27:50 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,4 @@ bool	join_philosophers(t_table *table)
 			return (false);
 	}
 	return (true);
-}
-
-void	observer(t_table *table)
-{
-	size_t	i;
-    bool   is_philo_eating;
-
-	i = 0;
-	while (true)
-	{
-        pthread_mutex_lock(&table->mutex[EATING]);
-        is_philo_eating = table->philos[i].is_eating;
-        pthread_mutex_unlock(&table->mutex[EATING]);
-		if (i == table->input.nb_philo)
-			i = 0;
-		if (!is_philo_eating)
-			death_watcher(&table->philos[i], get_time());
-		if (table->philo_full == table->input.nb_philo || table->stop
-			|| table->input.nb_eat == 0)
-			break ;
-		i++;
-		ft_usleep(3);
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: rmarceau <rmarceau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:14:59 by rmarceau          #+#    #+#             */
-/*   Updated: 2023/06/26 18:01:34 by rmarceau         ###   ########.fr       */
+/*   Updated: 2023/06/29 00:20:34 by rmarceau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_usleep(u_int64_t time)
 }
 
 // Checks if a string is a valid integer.
-static bool	is_valid_arg(char *string)
+static bool	is_valid_arg(const char *string)
 {
 	int	i;
 
